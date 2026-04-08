@@ -1,0 +1,17 @@
+name: Gitlint
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  gitlint:
+    runs-on: ubuntu-latest
+    name: GitLint
+    steps:
+      - name: Lint commits, branches, and pull requests
+        uses: aschbacd/gitlint-action@v1.1.0
+        re-pull-request-title: '(chore|docs|feat|fix|refactor|tests?)(\([^\)]+\))?: .*'
+        re-commit-message-subject: '(chore|docs|feat|fix|refactor|tests?)(\([^\)]+\))?: .*'

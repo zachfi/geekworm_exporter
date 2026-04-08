@@ -1,0 +1,43 @@
+project_name: geekworm_exporter
+
+env:
+  - GO111MODULE=on
+
+before:
+  hooks:
+    - go mod download
+
+builds:
+  - id: geekworm_exporter
+    dir: cmd/geekworm_exporter
+    binary: geekworm_exporter
+    env:
+      - CGO_ENABLED=0
+    goarm:
+      - 6
+      - 7
+    goos:
+      - linux
+      - freebsd
+    goarch:
+      - amd64
+      - arm
+    ldflags:
+      - -s -w -X main.version={{.Version}} -X main.appName={{.Binary}}
+    ignore:
+      - goos: freebsd
+        goarch: arm
+
+archives:
+  - replacements:
+      freebsd: FreeBSD
+      linux: Linux
+      amd64: x86_64
+checksum:
+  name_template: "{{ .ProjectName }}_checksums.txt"
+snapshot:
+  name_template: "{{ .Tag }}-next"
+# Already using git-chglog
+changelog:
+  skip: true
+
